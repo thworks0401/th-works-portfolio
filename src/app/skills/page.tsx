@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 type Skill = { name: string; level: number; note?: string };
 type SkillGroup = { category: string; icon: string; skills: Skill[] };
@@ -58,11 +58,16 @@ const skillGroups: SkillGroup[] = [
   },
 ];
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.5, delay: i * 0.07, ease: "easeOut" },
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: i * 0.07,
+      ease: "easeOut" as const,
+    },
   }),
 };
 
@@ -116,7 +121,7 @@ export default function SkillsPage() {
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.level}%` }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: gi * 0.07 + si * 0.05, ease: "easeOut" }}
+                      transition={{ duration: 0.8, delay: gi * 0.07 + si * 0.05, ease: "easeOut" as const }}
                     />
                   </div>
                 </div>
