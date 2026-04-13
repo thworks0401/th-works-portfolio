@@ -1,8 +1,11 @@
-// TODO: トップ ページ実装
-export default function Page() {
+import HeroSection from "@/components/sections/HeroSection";
+import WorksSnapshot from "@/components/sections/WorksSnapshot";
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="font-mono text-muted">トップ — 実装予定</p>
-    </div>
+    <main>
+      <HeroSection />
+      <WorksSnapshot />
+    </main>
   );
 }

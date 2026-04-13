@@ -1,79 +1,68 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
+const navItems = [
   { href: "/works",   label: "Works"   },
   { href: "/skills",  label: "Skills"  },
   { href: "/about",   label: "About"   },
   { href: "/contact", label: "Contact" },
-] as const;
+];
 
 export default function Header() {
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-bg/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0d0d0d]/80 backdrop-blur-md">
+      <div className="mx-auto max-w-5xl px-6 h-14 flex items-center justify-between">
         {/* ロゴ */}
-        <Link
-          href="/"
-          className="font-mono text-sm font-bold tracking-widest text-teal hover:text-teal-hover transition-colors duration-200"
-        >
-          TH<span className="text-text">Works</span>
+        <Link href="/" className="font-mono font-bold text-white text-sm tracking-wider hover:text-[#00b4c6] transition-colors">
+          TH<span className="text-[#00b4c6]">Works</span>
         </Link>
 
         {/* デスクトップナビ */}
-        <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "font-mono text-xs tracking-wider transition-colors duration-200",
+        <nav className="hidden sm:flex items-center gap-6">
+          {navItems.map(({ href, label }) => (
+            <Link key={href} href={href}
+              className={`text-xs font-mono transition-colors ${
                 pathname === href
-                  ? "text-teal"
-                  : "text-muted hover:text-text"
-              )}
-            >
+                  ? "text-[#00b4c6]"
+                  : "text-white/50 hover:text-white"
+              }`}>
               {label}
             </Link>
           ))}
         </nav>
 
-        {/* モバイルハンバーガー */}
+        {/* ハンバーガー */}
         <button
-          className="md:hidden text-muted hover:text-text transition-colors"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "メニューを閉じる" : "メニューを開く"}
+          onClick={() => setOpen(!open)}
+          className="sm:hidden text-white/50 hover:text-white transition-colors"
+          aria-label="メニュー"
         >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {/* モバイルメニュー */}
-      {menuOpen && (
-        <nav className="md:hidden border-t border-white/5 bg-surface px-6 py-4 flex flex-col gap-4">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              className={cn(
-                "font-mono text-sm tracking-wider transition-colors",
-                pathname === href ? "text-teal" : "text-muted hover:text-text"
-              )}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+      {open && (
+        <div className="sm:hidden border-t border-white/10 bg-[#0d0d0d]">
+          <nav className="max-w-5xl mx-auto px-6 py-4 flex flex-col gap-4">
+            {navItems.map(({ href, label }) => (
+              <Link key={href} href={href}
+                onClick={() => setOpen(false)}
+                className={`text-sm font-mono transition-colors ${
+                  pathname === href ? "text-[#00b4c6]" : "text-white/50 hover:text-white"
+                }`}>
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       )}
     </header>
   );
